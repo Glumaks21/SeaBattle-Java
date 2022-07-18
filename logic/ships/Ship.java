@@ -31,8 +31,12 @@ public class Ship {
     }
 
     public void hit(Cords cords) {
-        for (Cords localCords : location) {
-
+        for (int i = 0; i < location.length; i++) {
+            Cords localCords = location[i];
+            if (localCords.equals(cords)) {
+                hitStates[i] = true;
+                return;
+            }
         }
     }
 

@@ -1,6 +1,6 @@
 package logic.location;
 
-public class Cell {
+public final class Cell {
     public enum State {
         FREE, MISS, SHIP, DESTROYED
     }

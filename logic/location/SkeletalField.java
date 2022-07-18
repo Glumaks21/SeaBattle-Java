@@ -1,6 +1,9 @@
 package logic.location;
 
-public class SkeletalField implements Field {
+import java.util.Objects;
+import java.util.Observable;
+
+public abstract class SkeletalField extends Observable implements Field {
     private final Cell[][] grid;
 
     public SkeletalField() {
@@ -10,6 +13,18 @@ public class SkeletalField implements Field {
                 grid[y][x] = new Cell(new Cords(x, y));
             }
         }
+    }
+
+    @Override public Cell cellAt(Cords cords) {
+        return Objects.requireNonNull(grid[cords.getY()][cords.getX()]);
+    }
+
+    @Override public boolean isOpenedAt(Cords cords) {
+        return grid[cords.getY()][cords.getX()].isOpened();
+    }
+
+    @Override public void openAt(Cords cords) {
+        grid[cords.getY()][cords.getX()].open();
     }
 
     @Override public Cell.State getStateAt(Cords cords) {
@@ -25,6 +40,14 @@ public class SkeletalField implements Field {
         int y = cords.getY();
         return x >= 0 && x < grid.length && y >= 0 && y < grid.length;
     }
+
+    @Override public void shoot(Cords cords) {
+        markShoot(cords);
+        setChanged();
+        notifyObservers();
+    }
+
+    protected abstract void markShoot(Cords cords);
 
     public void print() {
         for (Cell[] line : grid) {

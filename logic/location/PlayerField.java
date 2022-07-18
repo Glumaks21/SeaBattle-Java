@@ -3,11 +3,16 @@ package logic.location;
 import logic.ships.Ship;
 import java.util.*;
 
-public class PlayerField extends SkeletalField {
+public final class PlayerField extends SkeletalField {
     private final List<Ship> shipList;
 
     public PlayerField() {
         shipList = new ArrayList<>();
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                openAt(new Cords(x, y));
+            }
+        }
     }
 
     public void setUpShips() {
@@ -55,10 +60,55 @@ public class PlayerField extends SkeletalField {
         return true;
     }
 
-    public void markShip(Ship ship) {
+    private void markShip(Ship ship) {
         for (Cords shipCords : ship.getLocation()) {
             setStateAt(shipCords, Cell.State.SHIP);
         }
     }
-}
 
+    protected void markShoot(Cords cords) {
+        if (getStateAt(cords) == Cell.State.FREE) {
+            setStateAt(cords, Cell.State.MISS);
+        } else if (getStateAt(cords) == Cell.State.SHIP) {
+            Ship ship = getShipAt(cords);
+            ship.hit(cords);
+            if (!ship.isAlive()) {
+                markDestroyedShip(ship);
+                shipList.remove(ship);
+            }
+            setStateAt(cords, Cell.State.DESTROYED);
+        }
+    }
+
+    private Ship getShipAt(Cords cords) {
+        for (Ship ship : shipList) {
+            for (Cords shipCords : ship.getLocation()) {
+                if (shipCords.equals(cords)) {
+                    return ship;
+                }
+            }
+        }
+        return null;
+    }
+
+    private void markDestroyedShip(Ship ship) {
+        Cords[] location = ship.getLocation();
+        int startX = location[0].getX() - 1;
+        int startY = location[0].getY() - 1;
+        int endX = location[location.length - 1].getX() + 1;
+        int endY = location[location.length - 1].getY() + 1;
+
+        for (int y = startY; y <= endY; y++) {
+            for (int x = startX; x <= endX; x++) {
+                Cords cords = new Cords(x, y);
+                if (isCordsBelong(cords)) {
+                    setStateAt(cords, Cell.State.MISS);
+                }
+            }
+        }
+
+        for (Cords shipCords : location) {
+            setStateAt(shipCords, Cell.State.DESTROYED);
+        }
+    }
+}
