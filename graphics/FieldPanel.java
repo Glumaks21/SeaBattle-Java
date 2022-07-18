@@ -2,10 +2,12 @@ package graphics;
 
 import logic.location.*;
 import javax.swing.*;
+import javax.swing.border.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 
-public abstract class FieldPanel extends JPanel implements Observer {
+public class FieldPanel extends JPanel implements Observer {
     private final Field field;
     protected final CellGui[][] grid;
 
@@ -16,7 +18,7 @@ public abstract class FieldPanel extends JPanel implements Observer {
         GridLayout gridLayout = new GridLayout(10, 10);
         gridLayout.setHgap(2);
         gridLayout.setVgap(2);
-        this.setLayout(gridLayout);
+        setLayout(gridLayout);
         grid = new CellGui[10][10];
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
@@ -27,7 +29,17 @@ public abstract class FieldPanel extends JPanel implements Observer {
                 this.add(cellGui);
             }
         }
+        setBackground(Color.LIGHT_GRAY);
+        setBorder(new CompoundBorder(new LineBorder(Color.GRAY, 5), new LineBorder(Color.DARK_GRAY, 4)));
         update(null, null);
+    }
+
+    public void addCellListener(ActionListener actionListener) {
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                grid[y][x].addActionListener(actionListener);
+            }
+        }
     }
 
     @Override public void update(Observable o, Object arg) {

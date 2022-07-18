@@ -9,8 +9,9 @@ public class CellGui extends JButton {
 
     public CellGui(Cell cell) {
         this.cell = cell;
-        setPreferredSize(new Dimension(60, 60));
-        setFont(new Font(Font.DIALOG, Font.BOLD, 30));
+        setPreferredSize(new Dimension(50, 50));
+        setFocusPainted(false);
+        setFont(new Font(Font.DIALOG, Font.BOLD, 20));
     }
 
     public Cords getCords() {
@@ -29,9 +30,12 @@ public class CellGui extends JButton {
             case FREE: text = " "; break;
             case MISS: text = "."; break;
             case SHIP: text = "*"; break;
-            case DESTROYED: text = "X"; break;
+            case DESTROYED:
+                text = "X";
+                setForeground(Color.RED);
+                break;
         }
-        this.setText(text);
+        setText(text);
         repaint();
     }
 }

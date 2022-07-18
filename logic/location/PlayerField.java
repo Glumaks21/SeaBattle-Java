@@ -111,4 +111,13 @@ public final class PlayerField extends SkeletalField {
             setStateAt(shipCords, Cell.State.DESTROYED);
         }
     }
+
+    public boolean areShipsAlive() {
+        for (Ship ship : shipList) {
+            if (ship.isAlive()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

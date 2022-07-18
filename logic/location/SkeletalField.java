@@ -1,7 +1,6 @@
 package logic.location;
 
-import java.util.Objects;
-import java.util.Observable;
+import java.util.*;
 
 public abstract class SkeletalField extends Observable implements Field {
     private final Cell[][] grid;
@@ -48,13 +47,4 @@ public abstract class SkeletalField extends Observable implements Field {
     }
 
     protected abstract void markShoot(Cords cords);
-
-    public void print() {
-        for (Cell[] line : grid) {
-            for (Cell cell : line) {
-                System.out.printf("%4d", cell.getState().ordinal());
-            }
-            System.out.println();
-        }
-    }
 }

@@ -5,7 +5,7 @@ import logic.location.*;
 public class Player {
     private PlayerField playerField;
     private EnemyField enemyField;
-    private GameSession gameSession;
+    protected GameSession gameSession;
     private boolean turn;
 
     public PlayerField getPlayerField() {

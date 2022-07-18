@@ -8,8 +8,7 @@ public class EnemyField extends SkeletalField {
         updateAll();
     }
 
-    @Override
-    protected void markShoot(Cords cords) {
+    @Override protected void markShoot(Cords cords) {
         playerField.shoot(cords);
         if (playerField.getStateAt(cords) == Cell.State.MISS) {
             openAt(cords);
