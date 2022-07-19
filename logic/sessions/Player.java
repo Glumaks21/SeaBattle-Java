@@ -3,10 +3,19 @@ package logic.sessions;
 import logic.location.*;
 
 public class Player {
-    private PlayerField playerField;
-    private EnemyField enemyField;
+    private final String name;
+    protected PlayerField playerField;
+    protected EnemyField enemyField;
     protected GameSession gameSession;
     private boolean turn;
+
+    public Player(String name) {
+        this.name = name;
+    }
+
+    @Override public String toString() {
+        return name;
+    }
 
     public PlayerField getPlayerField() {
         return playerField;
@@ -30,7 +39,9 @@ public class Player {
     }
 
     public void makeGuess(Cords cords) {
-        gameSession.checkGuess(this, cords);
+        if (turn) {
+            gameSession.checkGuess(this, cords);
+        }
     }
 
     public boolean isTurn() {

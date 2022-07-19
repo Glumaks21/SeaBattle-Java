@@ -29,7 +29,7 @@ public class FieldPanel extends JPanel implements Observer {
                 this.add(cellGui);
             }
         }
-        setBackground(Color.LIGHT_GRAY);
+        setBackground(Color.BLUE);
         setBorder(new CompoundBorder(new LineBorder(Color.GRAY, 5), new LineBorder(Color.DARK_GRAY, 4)));
         update(null, null);
     }

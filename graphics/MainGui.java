@@ -18,9 +18,9 @@ public class MainGui implements ActionListener {
         frame = new JFrame("Sea Battle");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        player1 = new Player();
+        player1 = new Player("Maks");
         player1.setTurn(true);
-        Bot bot = new Bot();
+        Bot bot = new Bot("Bot");
 
         GameSession gameSession = new GameSession(player1, bot);
         player1.setUpPlayerField();

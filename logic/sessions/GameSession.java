@@ -21,42 +21,30 @@ public class GameSession {
         player2.setUpEnemyField(player1.getPlayerField());
     }
 
-    public void checkGuess(Player p, Cords cords) {
-        if (p == player1 && player1.isTurn()) {
-            player1.getEnemyField().shoot(cords);
-            if (player1.getEnemyField().getStateAt(cords) == Cell.State.DESTROYED) {
-                if (!player2.getPlayerField().areShipsAlive()) {
-                    loger.addLog("Player1 победил!!!");
-                    player1.setTurn(false);
-                    player2.setTurn(false);
-                    return;
-                }
-                loger.addLog("Player 1 - попал, повторный ход\n");
-                player1.setTurn(true);
-            } else {
-                loger.addLog("Player 1 - мимо\n");
-                loger.addLog("Ход игрока player2\n");
-                loger.addLog("--------------------------------------------------------\n");
-                player1.setTurn(false);
-                player2.setTurn(true);
+    public void checkGuess(Player player, Cords cords) {
+        Player otherPlayer = player == player1? player2: player1;
+        if (player.isTurn()) {
+            if (player.getEnemyField().getStateAt(cords) != Cell.State.FREE) {
+                loger.addLog(player + " выбрал открытую клетку\n");
+                return;
             }
-        } else if (p == player2 && player2.isTurn()) {
-            player2.getEnemyField().shoot(cords);
-            if (player2.getEnemyField().getStateAt(cords) == Cell.State.DESTROYED) {
-                if (!player1.getPlayerField().areShipsAlive()) {
-                    loger.addLog("Player2 победил!!!");
-                    player1.setTurn(false);
-                    player2.setTurn(false);
+
+            player.getEnemyField().shoot(cords);
+            if (player.getEnemyField().getStateAt(cords) == Cell.State.DESTROYED) {
+                if (!otherPlayer.getPlayerField().areShipsAlive()) {
+                    loger.addLog(player + " уничтожил все корабли\n");
+                    player.setTurn(false);
                     return;
                 }
-                loger.addLog("Player 2 - попал, повторный ход\n");
-                player2.setTurn(true);
+
+                loger.addLog(player + " - попал, повторный ход\n");
+                player.setTurn(true);
             } else {
-                loger.addLog("Player 2 - мимо\n");
-                loger.addLog("Ход игрока player1\n");
+                loger.addLog(player + " - мимо\n");
+                loger.addLog("Ход игрока " + otherPlayer + "\n");
                 loger.addLog("--------------------------------------------------------\n");
-                player2.setTurn(false);
-                player1.setTurn(true);
+                player.setTurn(false);
+                otherPlayer.setTurn(true);
             }
         }
     }
